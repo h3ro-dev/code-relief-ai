@@ -13,6 +13,9 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        mono: ['JetBrains Mono', 'Fira Code', 'Consolas', 'Monaco', 'monospace'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -56,6 +59,22 @@ export default {
           "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
+        },
+        terminal: {
+          bg: "hsl(var(--terminal-bg))",
+          text: "hsl(var(--terminal-text))",
+        },
+        code: {
+          comment: "hsl(var(--code-comment))",
+          string: "hsl(var(--code-string))",
+          keyword: "hsl(var(--code-keyword))",
+          number: "hsl(var(--code-number))",
+        },
+        error: {
+          red: "hsl(var(--error-red))",
+        },
+        warning: {
+          yellow: "hsl(var(--warning-yellow))",
         },
       },
       borderRadius: {

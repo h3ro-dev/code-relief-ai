@@ -8,33 +8,54 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Terminal Dark Theme */
+    --background: 200 7% 8%;
+    --foreground: 120 100% 85%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 200 7% 10%;
+    --card-foreground: 120 100% 85%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 200 7% 10%;
+    --popover-foreground: 120 100% 85%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 120 100% 50%;
+    --primary-foreground: 200 7% 8%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 200 7% 15%;
+    --secondary-foreground: 120 100% 85%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 200 7% 15%;
+    --muted-foreground: 120 20% 65%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 45 100% 55%;
+    --accent-foreground: 200 7% 8%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 120 100% 95%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 200 7% 20%;
+    --input: 200 7% 15%;
+    --ring: 120 100% 50%;
+
+    /* Terminal specific colors */
+    --terminal-bg: 200 7% 6%;
+    --terminal-text: 120 100% 85%;
+    --code-comment: 120 20% 50%;
+    --code-string: 45 100% 65%;
+    --code-keyword: 280 100% 75%;
+    --code-number: 20 100% 65%;
+    --error-red: 0 100% 70%;
+    --warning-yellow: 45 100% 60%;
+
+    /* Gradients */
+    --gradient-terminal: linear-gradient(135deg, hsl(var(--terminal-bg)), hsl(200 7% 12%));
+    --gradient-code: linear-gradient(90deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+    
+    /* Animations */
+    --transition-terminal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --glow-primary: 0 0 20px hsl(var(--primary) / 0.3);
+    --glow-accent: 0 0 20px hsl(var(--accent) / 0.3);
+    --glow-error: 0 0 15px hsl(var(--error-red) / 0.4);
 
     --radius: 0.5rem;
 
@@ -100,6 +121,90 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-mono;
+  }
+}
+
+@layer components {
+  .terminal-window {
+    @apply bg-card border border-border rounded-lg p-6 font-mono text-sm;
+    background: var(--gradient-terminal);
+    box-shadow: var(--glow-primary);
+  }
+
+  .code-block {
+    @apply bg-secondary/50 border border-border rounded p-4 font-mono text-sm overflow-x-auto;
+  }
+
+  .terminal-prompt {
+    @apply text-primary font-mono;
+  }
+
+  .terminal-error {
+    @apply text-red-400 font-mono;
+  }
+
+  .code-keyword {
+    color: hsl(var(--code-keyword));
+  }
+
+  .code-string {
+    color: hsl(var(--code-string));
+  }
+
+  .code-comment {
+    color: hsl(var(--code-comment));
+  }
+
+  .code-number {
+    color: hsl(var(--code-number));
+  }
+
+  .glow-effect {
+    box-shadow: var(--glow-primary);
+    transition: var(--transition-terminal);
+  }
+
+  .glow-effect:hover {
+    box-shadow: var(--glow-accent);
+  }
+
+  .typing-animation {
+    overflow: hidden;
+    border-right: 2px solid hsl(var(--primary));
+    white-space: nowrap;
+    animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+  }
+
+  @keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+
+  @keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: hsl(var(--primary)); }
+  }
+
+  .matrix-bg {
+    background: 
+      radial-gradient(circle at 20% 80%, rgba(120, 255, 120, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(120, 255, 120, 0.05) 0%, transparent 50%),
+      var(--gradient-terminal);
+    position: relative;
+  }
+
+  .matrix-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      linear-gradient(90deg, transparent 90%, rgba(120, 255, 120, 0.03) 100%),
+      linear-gradient(0deg, transparent 90%, rgba(120, 255, 120, 0.03) 100%);
+    background-size: 20px 20px;
+    pointer-events: none;
   }
 }
