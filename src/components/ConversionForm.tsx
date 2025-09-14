@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { TerminalWindow } from "./TerminalWindow";
+import { submitLead } from "@/lib/lead";
 
 const techStacks = [
   "React/Next.js", "Vue/Nuxt", "Angular", "Node.js", "Python/Django", 
@@ -38,14 +39,14 @@ export const ConversionForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    // Here you would typically send the data to your backend
-    console.log("Form submitted:", formData);
-    
-    setIsSubmitting(false);
+    try {
+      const { ok, error } = await submitLead(formData as any);
+      if (!ok) {
+        console.error("Lead submission failed:", error);
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const painLabels = {
