@@ -8,6 +8,7 @@ import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { TerminalWindow } from "./TerminalWindow";
 import { submitLead } from "@/lib/lead";
+import { notifyLead, utmFromLocation } from "@/lib/notifyLead";
 
 const techStacks = [
   "React/Next.js", "Vue/Nuxt", "Angular", "Node.js", "Python/Django", 
@@ -43,6 +44,14 @@ export const ConversionForm = () => {
       const { ok, error } = await submitLead(formData as any);
       if (!ok) {
         console.error("Lead submission failed:", error);
+      } else {
+        try {
+          const page_url = typeof window !== 'undefined' ? window.location.href : '';
+          const payload = { ...formData, page_url, ...utmFromLocation() } as any;
+          notifyLead('contact', payload);
+        } catch (e) {
+          console.warn('notifyLead skipped', e);
+        }
       }
     } finally {
       setIsSubmitting(false);
